@@ -12,12 +12,12 @@ function App() {
   return (
     <BrowserRouter>
       <Toolbar isLogin={isLogin} />
-        <Switch>
-          <Route exact path="/"> <Home /> </Route>
-          <Route exact path="/masuk"><SignIn/> </Route>
-          <Route exact path="/daftar"> <SignUp/> </Route>
-          <Route exact path="/home"> <Home /> </Route>
-        </Switch>
+      <Switch>
+        <Route exact path="/"> <Home /> </Route>
+        <Route exact path="/masuk"><SignIn /> </Route>
+        <Route exact path="/daftar"> <SignUp /> </Route>
+        <Route exact path="/home"> <Home /> </Route>
+      </Switch>
     </BrowserRouter>
   );
 }
