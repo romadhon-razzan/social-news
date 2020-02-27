@@ -2,7 +2,7 @@ import React from 'react';
 class NewsCreator extends React.Component {
     render() {
         var creator = {
-            marginTop: '7%',
+            marginTop: '8%',
             padding: '10px',
             background: 'white',
             borderRadius: '10px',

@@ -1,9 +1,12 @@
 import React from 'react';
 export default class HeaderContent extends React.Component {
     render() {
+        var optionStyle = {
+            textAlign: 'right'
+        }
         return (
             <div class="columns">
-                <div class="column is-three-quarters">
+                <div class="column is-four-fifths">
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-48x48">
@@ -20,8 +23,12 @@ export default class HeaderContent extends React.Component {
                     </article>
                 </div>
                 <div class="column">
-                    Edit
-                            </div>
+                    <div style={optionStyle}>
+                        <span class="icon">
+                            <i class="fas fa-home"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
         );
     }
