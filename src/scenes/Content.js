@@ -12,7 +12,7 @@ export default function Content(props){
         <div>
             {props.contents.map((content, index) => <div key={index} style={contentStyle}>
                 <HeaderContent />
-                <hr />
+                <br/>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQDKliPAVm3AWTAX-gwQB3JxCOTJgONW_OHUoV6cBElF-8SVL-O" />
                 <div>
                     <strong>{content.title}</strong>

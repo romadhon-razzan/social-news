@@ -1,9 +1,9 @@
 import axios from 'axios';
-const BASE_URL = "https://jsonplaceholder.typicode.com/"
-const CONTENT_TYPE = "application/x-www-form-urlencoded"
+const BASE_URL = "http://learn.hackatown.online/api/"
+const CONTENT_TYPE = "application/json"
 export const instance = axios.create({
     baseURL: BASE_URL,
     timeout: 1000,
-    headers:  { 'content-type': CONTENT_TYPE }
+    headers:  { 'Access-Control-Allow-Headers': 'origin' }
 });
   

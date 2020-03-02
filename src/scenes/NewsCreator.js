@@ -8,9 +8,14 @@ class NewsCreator extends React.Component {
             borderRadius: '10px',
             border: '1px solid #CFD8DC'
         }
+        var titleStyle={
+            borderTopLeftRadius: '10px',
+            border: '1px solid #CFD8DC',
+            backgroundColor:'blue'
+        }
         return (
             <div style={creator}>
-                <strong>Buat Berita</strong>
+                <div style={titleStyle}><strong>Buat Berita</strong></div>
                 <hr />
                 <label class="label" >Ada berita baru ?</label>
             </div>

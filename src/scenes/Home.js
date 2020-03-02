@@ -12,7 +12,7 @@ class Home extends React.Component {
     }
 
     componentWillMount() {
-        instance.get('posts')
+        instance.get('news')
             .then((data) => {
                 console.log('RESPONSE : ', data.data)
                 this.setState({ isLoading: false, contents: data.data })
@@ -44,7 +44,6 @@ class Home extends React.Component {
                     ) : (
                             <Content contents={this.state.contents} />
                         )}
-
                 </div>
                 <div class="column" />
             </div>
