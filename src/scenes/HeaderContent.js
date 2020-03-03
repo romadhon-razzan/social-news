@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+moment.locale();
 export default class HeaderContent extends React.Component {
     constructor(props) {
         super(props)
@@ -18,9 +20,9 @@ export default class HeaderContent extends React.Component {
                         </div>
                         <div class="media-content">
                             <div class="content">
-                                <strong>{this.props.header.username}</strong>
+                                <strong>{this.props.header.user.username}</strong>
                                 <br />
-                                <small>{this.props.header.created_at}</small>
+                                <small>{moment(this.props.header.created_at, "YYYYMMDD").fromNow()}</small>
                             </div>
                         </div>
                     </article>

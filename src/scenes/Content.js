@@ -28,7 +28,7 @@ export default class Content extends React.Component {
             <div>
                     {this.state.news.map(post =>
                         <div key={post.id} style={contentStyle}>
-                        <HeaderContent header={post.user} />
+                        <HeaderContent header={post} />
                         <br />
                         <div class="columns">
                             <div class="column"/>
