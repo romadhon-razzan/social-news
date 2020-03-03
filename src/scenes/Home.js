@@ -14,8 +14,8 @@ class Home extends React.Component {
     componentWillMount() {
         instance.get('news')
             .then((data) => {
-                console.log('RESPONSE : ', data.data)
-                this.setState({ isLoading: false, contents: data.data })
+                console.log('RESPONSE : ', data.data.data)
+                this.setState({ isLoading: false, contents: data.data.data })
             })
             .catch(function (error) {
 

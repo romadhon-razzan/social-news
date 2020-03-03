@@ -1,5 +1,8 @@
 import React from 'react';
 export default class HeaderContent extends React.Component {
+    constructor(props) {
+        super(props)
+    }
     render() {
         var optionStyle = {
             textAlign: 'right'
@@ -15,9 +18,9 @@ export default class HeaderContent extends React.Component {
                         </div>
                         <div class="media-content">
                             <div class="content">
-                                <strong>John Smith</strong>
+                                <strong>{this.props.header.username}</strong>
                                 <br />
-                                <small>31 menit yang lalu</small>
+                                <small>{this.props.header.created_at}</small>
                             </div>
                         </div>
                     </article>
