@@ -6,4 +6,9 @@ export const instance = axios.create({
     timeout: 1000,
     headers:  { 'Content-Type': CONTENT_TYPE }
 });
-  
+export const setClientToken = token => {
+    instance.interceptors.request.use(function(config) {
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
+  };

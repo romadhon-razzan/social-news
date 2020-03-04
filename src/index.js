@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 var main = {
-    backgroundColor: '#E3F2FD'
+    backgroundColor: '#FFF'
   }
 ReactDOM.render(<div style={main}><App /></div>, document.getElementById('root'));
 

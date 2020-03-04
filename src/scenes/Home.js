@@ -1,6 +1,7 @@
 import React from 'react';
 import NewsCreator from './NewsCreator';
 import Content from './Content';
+import Toolbar from '../components/Toolbar';
 import { instance } from '../configs/ApiKit';
 class Home extends React.Component {
     constructor(props) {
@@ -33,7 +34,9 @@ class Home extends React.Component {
         }
 
         return (
-            <div class="columns" >
+            <div>
+                <Toolbar isLogin={this.props.isAuth} />
+                <div class="columns" >
                 <div class="column" />
                 <div style={container} class="column is-three-quarters">
                     <NewsCreator />
@@ -46,6 +49,7 @@ class Home extends React.Component {
                         )}
                 </div>
                 <div class="column" />
+            </div>
             </div>
         );
     }

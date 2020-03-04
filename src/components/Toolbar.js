@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {setClientToken} from '../configs/ApiKit';
 class Toolbar extends React.Component {
+
+    signOutHandler = () => {
+        setClientToken('')
+        localStorage.clear()
+    }
     render() {
         const urlLogo = "https://sevima.com/wp-content/uploads/2016/06/Logo-Sevima.png"
         var navbarStyle = {
@@ -12,6 +18,9 @@ class Toolbar extends React.Component {
         }
         var searchStyle = {
             width: '450px'
+        }
+        var timelineStyle = {
+            marginRight: '10px'
         }
 
         return (
@@ -39,20 +48,25 @@ class Toolbar extends React.Component {
                             </div>
                         </div>
                         {this.props.isLogin ? (
-                            <div></div>
-                        ):(
                             <div className="navbar-end">
-                            <div className="navbar-item">
-                                <div className="buttons"  >
-                                    <Link className="button is-primary is-rounded" to="/daftar">
-                                        <strong>Daftar</strong>
-                                    </Link>
-                                    <Link className="button is-link is-rounded" to="/masuk">Masuk</Link>
+                                <div className="navbar-item">
+                                    <button style={timelineStyle} className="button is-link is-outlined"> Timeline</button>
+                                    <Link to="/" onClick={this.signOutHandler}> Keluar</Link>
                                 </div>
                             </div>
-                        </div>
-                        )}
-                        
+                        ) : (
+                                <div className="navbar-end">
+                                    <div className="navbar-item">
+                                        <div className="buttons"  >
+                                            <Link className="button is-primary is-rounded" to="/daftar">
+                                                <strong>Daftar</strong>
+                                            </Link>
+                                            <Link className="button is-link is-rounded" to="/masuk">Masuk</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                     </div>
                 </navbar>
             </div>
