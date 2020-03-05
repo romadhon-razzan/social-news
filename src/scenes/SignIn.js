@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
+import { withGlobalState } from 'react-globally';
 import 'bulma/css/bulma.css';
 import { Link, Redirect, Route } from 'react-router-dom';
 import { instance, setClientToken } from '../configs/ApiKit';
 
-export default class SignIn extends React.Component {
+const label = {
+    fontWeight: 'bold'
+}
+const labelErrorStyle = {
+    color: 'red',
+    fontSize: 12
+}
+const button = {
+    width: '100%',
+    marginTop: '15px'
+}
+class SignIn extends React.Component {
 
     constructor(props) {
         super(props)
@@ -11,8 +23,7 @@ export default class SignIn extends React.Component {
             username: '',
             password: '',
             isEmptyUsername: false,
-            isEmptyPassword: false,
-            isAuth: false
+            isEmptyPassword: false
         }
     }
     usernameListener = (event) => {
@@ -44,8 +55,10 @@ export default class SignIn extends React.Component {
                 })
                     .then( (response) => {
                         setClientToken(response.data.meta.token)
-                        this.setState({isAuth: true})
                         localStorage.setItem('token', response.data.meta.token);
+                        this.props.setGlobalState({
+                            isAuth: true
+                          })
                     })
                     .catch(function (error) {
                         console.log("LOGIN ERROR : ", error)
@@ -56,24 +69,8 @@ export default class SignIn extends React.Component {
     }
 
     render() {
-        var label = {
-            fontWeight: 'bold'
-        }
-        var labelErrorStyle = {
-            color: 'red',
-            fontSize: 12
-        }
-        var button = {
-            width: '100%',
-            marginTop: '15px'
-        }
-        var labelOr = {
-            width: '100%',
-            textAlign: 'center'
-        }
-
-        if (this.state.isAuth){
-            return <Redirect to="/home"/>;
+        if (this.props.globalState.isAuth){
+            return <Redirect to="/beranda"/>;
         }
         return (
             <div class="modal is-active">
@@ -118,6 +115,7 @@ export default class SignIn extends React.Component {
             </div>
         );
     }
-
 }
+
+export default withGlobalState(SignIn)
 

@@ -26,7 +26,7 @@ class NewsCreator extends React.Component {
         return (
             <div style={creatorStyle}>
                 <div style={titleStyle}><strong>Buat Berita</strong></div>
-                <label style={labelInputStyle} class="label" > <Link to="/create-news"> Ada berita baru ?</Link></label>
+                <label style={labelInputStyle} class="label" > <Link to="/buat-berita"> Ada berita baru ?</Link></label>
             </div>
         );
     }

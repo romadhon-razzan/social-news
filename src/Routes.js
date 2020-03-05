@@ -1,22 +1,35 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
+import { withGlobalState } from 'react-globally';
+import Toolbar from './components/Toolbar';
 import Home from './scenes/Home';
-import NewsDetail from './scenes/NewsDetail';
-import NewsCreator from './scenes/NewsCreator';
-class Routes extends React.Component {
-    render(){
-        return(
-            <Router>
-                <div>
-                <Switch>
-                    <Route path="/"><Home/></Route>
-                    <Route path="/create-news"><NewsCreator/></Route>
-                    <Route path="/create-news"><NewsCreator/></Route>
-                    <Route path="/detail-news/:id"><NewsDetail/></Route>
-                </Switch>
-                </div>
-            </Router>
-        );
-    }
+import SignUp from './scenes/SignUp';
+import SignIn from './scenes/SignIn';
+import CreateNews from './scenes/CreateNews';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import NewsManager from './scenes/NewsManager';
+import 'bulma/css/bulma.css'
+
+const Routes = (props) => {
+  return (
+    <BrowserRouter>
+      {
+        props.globalState.isAuth ?
+          (
+            <Toolbar isLogin={true} />
+          ) : (
+            <Toolbar isLogin={false} />
+          )
+      }
+      <Switch>
+        <Route exact path="/"> <Home /> </Route>
+        <Route exact path="/masuk"><SignIn /> </Route>
+        <Route exact path="/daftar"> <SignUp /> </Route>
+        <Route exact path="/buat-berita"> <CreateNews /> </Route>
+        <Route exact path="/kelola-berita"> <NewsManager /> </Route>
+        <Route exact path="/beranda"> <Home /> </Route>
+      </Switch>
+    </BrowserRouter>
+  );
 }
-export default Routes
+
+export default withGlobalState(Routes)

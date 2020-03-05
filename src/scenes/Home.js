@@ -3,6 +3,14 @@ import NewsCreator from './NewsCreator';
 import Content from './Content';
 import Toolbar from '../components/Toolbar';
 import { instance } from '../configs/ApiKit';
+
+const container = {
+    paddingLeft: '4%',
+    paddingRight: '4%'
+}
+const loadingStyle = {
+    height: '500px'
+}
 class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -11,7 +19,6 @@ class Home extends React.Component {
             isLoading: true
         }
     }
-
     componentWillMount() {
         instance.get('news')
             .then((data) => {
@@ -19,37 +26,26 @@ class Home extends React.Component {
                 this.setState({ isLoading: false, contents: data.data.data })
             })
             .catch(function (error) {
-
             });
     }
 
     render() {
-        var container = {
-            paddingLeft: '4%',
-            paddingRight: '4%'
-        }
-
-        var loading = {
-            height: '500px'
-        }
-
         return (
             <div>
-                <Toolbar isLogin={this.props.isAuth} />
                 <div class="columns" >
-                <div class="column" />
-                <div style={container} class="column is-three-quarters">
-                    <NewsCreator />
-                    {this.state.isLoading ? (
-                        <div style={loading}>
-                            Please Wait ...
+                    <div class="column" />
+                    <div style={container} class="column is-three-quarters">
+                        <NewsCreator />
+                        {this.state.isLoading ? (
+                            <div style={loadingStyle}>
+                                Please Wait ...
                     </div>
-                    ) : (
-                            <Content contents={this.state.contents} />
-                        )}
+                        ) : (
+                                <Content contents={this.state.contents} />
+                            )}
+                    </div>
+                    <div class="column" />
                 </div>
-                <div class="column" />
-            </div>
             </div>
         );
     }

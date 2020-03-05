@@ -2,6 +2,11 @@ import React from 'react';
 import 'bulma/css/bulma.css';
 import {instance} from '../configs/ApiKit';
 import { Link, Redirect } from 'react-router-dom';
+
+const buttonAttachmentStyle = {
+    marginTop: '15px'
+}
+
 class CreateNews extends React.Component {
     constructor(props) {
         super(props)
@@ -49,19 +54,14 @@ class CreateNews extends React.Component {
         }
     }
     render() {
-        var label = {
-            fontWeight: 'bold'
-        }
-        var buttonAttachmentStyle = {
-            marginTop: '15px'
-        }
+
         if (this.state.isAuth) {
-            return <Redirect to="/home" />
+            return <Redirect to="/beranda" />
         }
 
         if(this.state.successCreate){
             return(
-                <Redirect to="/home"/>
+                <Redirect to="/beranda"/>
             );
         }
         return (
