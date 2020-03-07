@@ -1,35 +1,18 @@
 import React from 'react';
-import 'bulma/css/bulma.css';
-import { instance } from '../configs/ApiKit';
+import { instance, setClientToken } from '../configs/ApiKit';
+import { withGlobalState } from 'react-globally';
 import { Link, Redirect } from 'react-router-dom';
 import { ToastsContainer, ToastsStore, ToastsContainerPosition } from 'react-toasts';
 
-const label = {
-    fontWeight: 'bold'
-}
-const button = {
-    width: '100%',
-    marginTop: '15px'
-}
-const bodyStyle = {
-    width: '100%',
-    marginTop: '10%',
-    border: '2px solid #0091EA',
-    borderRadius: '10px'
-}
-const headerStyle = {
-    marginTop: '10%'
-}
+const headerStyle = { backgroundColor: '#2196F3' }
+const titleStyle = { fontWeight: 'bold', color: '#FFFFFF' }
+const label = { fontWeight: 'bold' }
+const button = { width: '100%', marginTop: '15px' }
 
 class SignUp extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            username: '',
-            password: '',
-            confirmPassword: '',
-            isloading: false
-        }
+        this.state = { username: '', password: '', confirmPassword: '' }
     }
 
     usernameInputHandler = (event) => {
@@ -43,26 +26,25 @@ class SignUp extends React.Component {
         this.setState({ confirmPassword: event.target.value })
     }
     requestRegister() {
-        this.setState({ isloading: true })
+        this.props.setGlobalState({ loading: true })
         instance.post('register', {
             username: this.state.username,
             password: this.state.password
         })
             .then((response) => {
                 console.log("Response : ", response)
-                this.setState({ isloading: false })
-                if (response.status === 200) {
-                    if (response.data.error) {
-                        ToastsStore.error(response.data.message)
-                    } else {
-                        ToastsStore.success(response.data.message)
-                    }
-                } else if (response.status === 201) {
-                    ToastsStore.error(response.statusText)
+                if (response.data.error) {
+                    this.props.setGlobalState({ isAuth: true, loading: false })
+                    ToastsStore.error(response.data.message)
+                } else {
+                    ToastsStore.success("Berhasil daftar")
+                    setClientToken(response.data.meta.token)
+                    localStorage.setItem('token', response.data.meta.token);
+                    this.props.setGlobalState({ isAuth: true, loading: false })
                 }
             })
             .catch((error) => {
-                this.setState({ isloading: false })
+                this.props.setGlobalState({ isAuth: true, loading: false })
                 console.log(error)
             })
     }
@@ -92,64 +74,65 @@ class SignUp extends React.Component {
     }
 
     render() {
+        if (this.props.globalState.isAuth) {
+            return <Redirect to="/beranda" />;
+        }
         return (
-            <div class="columns">
-                <div class="column" />
-                <div class="column">
+            <div class="modal is-active">
+                <div class="modal-background"></div>
+                <div class="modal-card">
                     <ToastsContainer position={ToastsContainerPosition.BOTTOM_CENTER} store={ToastsStore} />
-                    <button style={headerStyle} class="button is-secondary" >Kembali</button>
+                    <header style={headerStyle} class="modal-card-head">
+                        <p style={titleStyle} class="modal-card-title">Daftar</p>
+                        <Link to="/"><button class="delete is-normal" aria-label="close" /></Link>
+                    </header>
+                    <section class="modal-card-body">
+                        <label style={label}>Username</label>
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" value={this.state.username} onChange={this.usernameInputHandler} type="email" placeholder="Masukkan username Anda" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <span class="icon is-small is-right">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </p>
+                        </div>
 
-                    <div style={bodyStyle}>
-                        <section class="modal-card-body">
-                            <label style={label}>Username</label>
-                            <div class="field">
-                                <p class="control has-icons-left has-icons-right">
-                                    <input class="input" value={this.state.username} onChange={this.usernameInputHandler} type="email" placeholder="Masukkan username Anda" />
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                    <span class="icon is-small is-right">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </p>
-                            </div>
+                        <label style={label}>Kata Sandi</label>
+                        <div class="field">
+                            <p class="control has-icons-left ">
+                                <input class="input" value={this.state.password} onChange={this.passwordInputHandler} type="password" placeholder="Masukkan kata sandi Anda" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </p>
+                        </div>
 
-                            <label style={label}>Kata Sandi</label>
-                            <div class="field">
-                                <p class="control has-icons-left ">
-                                    <input class="input" value={this.state.password} onChange={this.passwordInputHandler} type="password" placeholder="Masukkan kata sandi Anda" />
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                </p>
-                            </div>
+                        <label style={label}>Konfirmasi Kata Sandi</label>
+                        <div class="field">
+                            <p class="control has-icons-left ">
+                                <input class="input" value={this.state.confirmPassword} onChange={this.confirmPasswordInputHandler} type="password" placeholder="Ketik ulang kata sandi" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </p>
+                        </div>
 
-                            <label style={label}>Konfirmasi Kata Sandi</label>
-                            <div class="field">
-                                <p class="control has-icons-left ">
-                                    <input class="input" value={this.state.confirmPassword} onChange={this.confirmPasswordInputHandler} type="password" placeholder="Ketik ulang kata sandi" />
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <p class="control">
-                                    {this.state.isloading ? (
-                                        <button style={button} class="button is-link is-loading" onClick={this.submit}>Daftar</button>
-                                    ) : (
-                                            <button style={button} class="button is-link" onClick={this.submit}>Daftar</button>
-                                        )}
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-
+                        <div class="field">
+                            <p class="control">
+                                {this.props.globalState.loading ? (
+                                    <button style={button} class="button is-link is-loading" onClick={this.submit}>Daftar</button>
+                                ) : (
+                                        <button style={button} class="button is-link" onClick={this.submit}>Daftar</button>
+                                    )}
+                            </p>
+                        </div>
+                    </section>
                 </div>
-                <div class="column" />
             </div>
         );
     }
 }
-export default SignUp
+export default withGlobalState(SignUp)

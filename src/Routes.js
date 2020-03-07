@@ -25,6 +25,7 @@ const Routes = (props) => {
         <Route exact path="/masuk"><SignIn /> </Route>
         <Route exact path="/daftar"> <SignUp /> </Route>
         <Route exact path="/buat-berita"> <CreateNews /> </Route>
+        <Route exact path="/ubah-berita/:newsId"> <CreateNews /> </Route>
         <Route exact path="/kelola-berita"> <NewsManager /> </Route>
         <Route exact path="/beranda"> <Home /> </Route>
       </Switch>

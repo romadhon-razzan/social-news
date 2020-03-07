@@ -4,7 +4,9 @@ import Routes from './Routes';
 import 'bulma/css/bulma.css'
 
 const initialState = {
+  data:'',
   isAuth: false,
+  loading: false,
   isLogout: false
 }
 

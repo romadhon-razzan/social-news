@@ -1,16 +1,10 @@
 import React from 'react';
 import NewsCreator from './NewsCreator';
 import Content from './Content';
-import Toolbar from '../components/Toolbar';
 import { instance } from '../configs/ApiKit';
 
-const container = {
-    paddingLeft: '4%',
-    paddingRight: '4%'
-}
-const loadingStyle = {
-    height: '500px'
-}
+const container = { paddingLeft: '4%', paddingRight: '4%' }
+const loadingStyle = { height: '500px' }
 class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -18,17 +12,21 @@ class Home extends React.Component {
             contents: [],
             isLoading: true
         }
+        this.handleGetNews = this.handleGetNews.bind( this )
     }
     componentWillMount() {
-        instance.get('news')
-            .then((data) => {
-                console.log('RESPONSE : ', data.data.data)
-                this.setState({ isLoading: false, contents: data.data.data })
-            })
-            .catch(function (error) {
-            });
+        this.handleGetNews()
     }
 
+    handleGetNews() {
+        instance.get('news')
+        .then((data) => {
+            console.log('RESPONSE : ', data.data.data)
+            this.setState({ isLoading: false, contents: data.data.data })
+        })
+        .catch(function (error) {
+        });
+    }
     render() {
         return (
             <div>

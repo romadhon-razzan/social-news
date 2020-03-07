@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withGlobalState } from 'react-globally';
 import 'bulma/css/bulma.css';
-import { Link, Redirect, Route } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { instance, setClientToken } from '../configs/ApiKit';
+import { ToastsContainer, ToastsStore, ToastsContainerPosition } from 'react-toasts';
 
-const label = {
-    fontWeight: 'bold'
-}
-const labelErrorStyle = {
-    color: 'red',
-    fontSize: 12
-}
-const button = {
-    width: '100%',
-    marginTop: '15px'
-}
+const headerStyle = { backgroundColor: '#2196F3' }
+const titleStyle = { fontWeight: 'bold', color: '#FFFFFF' }
+const label = { fontWeight: 'bold' }
+const labelErrorStyle = { color: 'red', fontSize: 12 }
+const button = { width: '100%', marginTop: '15px' }
 class SignIn extends React.Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -40,45 +34,49 @@ class SignIn extends React.Component {
 
     onSubmit = (event) => {
         if (this.state.username == '') {
-            console.log("Username harus diisi")
+            ToastsStore.error("Username harus diisi")
             this.setState({ isEmptyUsername: true, isEmptyPassword: false })
         } else {
             if (this.state.password == '') {
-                console.log("Password harus diisi")
+                ToastsStore.error("Password harus diisi")
                 this.setState({ isEmptyUsername: false, isEmptyPassword: true })
             } else {
                 this.setState({ isEmptyUsername: false, isEmptyPassword: false })
-                console.log("LOGIN PROSES")
+                this.props.setGlobalState({ loading: true })
                 instance.post('login', {
                     username: this.state.username,
                     password: this.state.password
                 })
-                    .then( (response) => {
-                        setClientToken(response.data.meta.token)
-                        localStorage.setItem('token', response.data.meta.token);
-                        this.props.setGlobalState({
-                            isAuth: true
-                          })
+                    .then((response) => {
+                        if (response.data.error) {
+                            this.props.setGlobalState({ isAuth: true, loading: false })
+                            ToastsStore.error(response.data.message)
+                        } else {
+                            ToastsStore.success("Berhasil login")
+                            setClientToken(response.data.meta.token)
+                            localStorage.setItem('token', response.data.meta.token);
+                            this.props.setGlobalState({ isAuth: true, loading: false })
+                        }
                     })
-                    .catch(function (error) {
-                        console.log("LOGIN ERROR : ", error)
+                    .catch((error) => {
+                        this.props.setGlobalState({ isAuth: false, loading: false })
                     })
             }
         }
-
     }
 
     render() {
-        if (this.props.globalState.isAuth){
-            return <Redirect to="/beranda"/>;
+        if (this.props.globalState.isAuth) {
+            return <Redirect to="/beranda" />;
         }
         return (
             <div class="modal is-active">
                 <div class="modal-background"></div>
                 <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Login</p>
-                        <Link to="/"><button class="delete is-large" aria-label="close" /></Link>
+                    <ToastsContainer position={ToastsContainerPosition.BOTTOM_CENTER} store={ToastsStore} />
+                    <header style={headerStyle} class="modal-card-head">
+                        <p style={titleStyle} class="modal-card-title">Login</p>
+                        <Link to="/"><button class="delete is-normal" aria-label="close" /></Link>
                     </header>
                     <section class="modal-card-body">
                         <label style={label}>Username</label>
@@ -107,7 +105,11 @@ class SignIn extends React.Component {
                         {this.state.isEmptyPassword ? (<p><label style={labelErrorStyle}>Kata sandi harus diisi</label></p>) : (<label></label>)}
                         <div class="field">
                             <p class="control">
-                                <button style={button} class="button is-success" onClick={this.onSubmit}>Masuk</button>
+                                {this.props.globalState.loading ? (
+                                    <button style={button} class="button is-link is-loading">Loading</button>
+                                ) : (
+                                        <button style={button} class="button is-link" onClick={this.onSubmit}>Masuk</button>
+                                    )}
                             </p>
                         </div>
                     </section>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Toolbar from '../components/Toolbar';
+import NewsCreator from '../scenes/NewsCreator';
 import { instance } from '../configs/ApiKit';
 import { Link } from 'react-router-dom';
 import { ToastsContainer, ToastsStore, ToastsContainerPosition } from 'react-toasts';
@@ -17,6 +17,7 @@ export default class NewsManager extends React.Component {
         this.state = {
             items: []
         }
+        this.getNewsList = this.getNewsList.bind(this)
     }
 
     componentWillMount() {
@@ -26,7 +27,6 @@ export default class NewsManager extends React.Component {
     getNewsList() {
         instance.get('news-by-user')
             .then((response) => {
-                console.log("MANAGE RESPONSE - ", response.data.data)
                 this.setState({ items: response.data.data })
             })
             .catch((error) => {
@@ -52,6 +52,7 @@ export default class NewsManager extends React.Component {
                 <div class="columns">
                     <div class="column" />
                     <div class="column is-three-quarters">
+                    <NewsCreator />
                         <ToastsContainer position={ToastsContainerPosition.BOTTOM_CENTER} store={ToastsStore} />
                         {this.state.items.map((item, index) =>
                             <div key={item.id}>
@@ -67,7 +68,7 @@ export default class NewsManager extends React.Component {
                                     <div class="column is-3">
                                         <div className="buttons"  >
                                             <button className="button is-link is-outlined is-small" >
-                                                Ubah
+                                                <Link to="ubah-berita/beritaku"> Ubah </Link>
                                             </button>
                                             <button className="button is-danger is-outlined is-small" onClick={() => this.removeHandler(item.id)}>Hapus</button>
                                         </div>
